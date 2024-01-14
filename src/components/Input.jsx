@@ -79,7 +79,7 @@ export const RadioInput = ({ title, handleInputChange, name, value }) => {
 
 export const RadioGroup = ({ title, value, name, handleInputChange }) => {
   return (
-    <div className="flex flex-row items-center gap-2 justify-center">
+    <div className="flex flex-row items-center gap-2 justify-center sm:text-custom-sm">
       <span>{title}</span>
       <input
         onChange={(e) => handleInputChange(e)}
@@ -87,7 +87,7 @@ export const RadioGroup = ({ title, value, name, handleInputChange }) => {
         type="radio"
         name={name}
         value={title}
-        className="cursor-pointer"
+        className="cursor-pointer w-3 h-3"
       />
     </div>
   );

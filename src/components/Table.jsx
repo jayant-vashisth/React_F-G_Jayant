@@ -26,7 +26,7 @@ export const Table = () => {
   };
 
   return (
-    <div class="mt-4 overflow-x-auto flex h-96 flex-col gap-3 data-table">
+    <div class="mt-4 overflow-x-auto flex md:h-96 max-[640px]:max-h-screen flex-col gap-3 data-table">
       <div className="mt-2">
         <div>
           <label
