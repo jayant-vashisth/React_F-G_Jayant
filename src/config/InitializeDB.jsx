@@ -5,12 +5,10 @@ export const initializeDB = () => {
     request.onupgradeneeded = (event) => {
       const db = event.target.result;
 
-      // Create an object store named 'diningExperience' with an auto-incrementing key
       const objectStore = db.createObjectStore("diningExperience", {
         autoIncrement: true,
       });
 
-      // Define the structure of the object store (fields in the form)
       objectStore.createIndex("customerName", "customerName", {
         unique: false,
       });

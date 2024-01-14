@@ -2,23 +2,20 @@ import React, { useContext } from "react";
 import { Form } from "../components/Form";
 import { ActiveContext } from "../state/NavigationContext";
 import { DataDashboard } from "../components/DataDashboard";
-import { SuccessToast } from "../components/Toast";
+import { SuccessToast, WarningToast } from "../components/Toast";
+import { ToasterContext } from "../state/ToasterContext";
 
 export const LandingPage = () => {
-  const { active, isVisible } = useContext(ActiveContext);
+  const { active } = useContext(ActiveContext);
+  const { isVisible, isErrorVisible } = useContext(ToasterContext);
 
   return (
-    <div
-      className="flex flex-col relative items-center min-h-screen"
-      style={{ background: "#ECEFF0" }}
-    >
+    <div className="flex flex-col relative items-center min-h-screen pb-10 bg-bgColor">
       <div className="absolute right-4 top-5">
         {isVisible && <SuccessToast />}
+        {isErrorVisible && <WarningToast />}
       </div>
-      <div
-        className="header bg-black w-full h-56 pt-7 pl-5"
-        style={{ backgroundColor: "#082142" }}
-      >
+      <div className="header bg-black w-full h-56 pt-7 pl-5 bg-darkBlue">
         <span className="text-white font-bold text-custom-xl font-customFont">
           Aromatic Bar
         </span>

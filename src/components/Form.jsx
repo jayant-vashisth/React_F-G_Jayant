@@ -2,8 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Input, RadioInput } from "./Input";
 import { Tabs } from "./Tabs";
 import { initializeDB } from "../config/InitializeDB";
-import { SuccessToast, Toast } from "./Toast";
-import { ActiveContext } from "../state/NavigationContext";
+import { ToasterContext } from "../state/ToasterContext";
 
 export const Form = () => {
   const initialFormData = {
@@ -16,14 +15,15 @@ export const Form = () => {
     diningExperience: "",
   };
 
-  const { setIsVisible, hideToast } = useContext(ActiveContext);
+  const { setIsVisible, hideToast, setIsErrorVisible } =
+    useContext(ToasterContext);
 
   const [formData, setFormData] = useState(initialFormData);
   const [showEmailError, setShowEmailError] = useState(false);
   const [showPhoneError, setShowPhoneError] = useState(false);
 
   // Function to add form data to IndexedDB
-  function addFormData(formData) {
+  const addFormData = (formData) => {
     initializeDB()
       .then((db) => {
         const transaction = db.transaction(["diningExperience"], "readwrite");
@@ -33,7 +33,6 @@ export const Form = () => {
         request.onsuccess = () => {
           setIsVisible(true);
           hideToast();
-          console.log("dasdasdasds");
         };
 
         transaction.oncomplete = () => {
@@ -43,13 +42,23 @@ export const Form = () => {
       .catch((error) => {
         console.error(error);
       });
-  }
+  };
 
   // Function to handle form submission
   const handleSubmit = async () => {
-    // Add current form data to the array
+    if (
+      formData.email?.length != 0 &&
+      !isValidEmail(formData.email) &&
+      formData.email?.length != 0 &&
+      !isValidIndianPhoneNumber(formData.phone)
+    ) {
+      setShowEmailError(true);
+      setShowPhoneError(true);
+      return;
+    }
     if (formData.email?.length != 0 && !isValidEmail(formData.email)) {
       setShowEmailError(true);
+      return;
     }
 
     if (
@@ -57,15 +66,22 @@ export const Form = () => {
       !isValidIndianPhoneNumber(formData.phone)
     ) {
       setShowPhoneError(true);
+      return;
     }
 
     if (
       isValidEmail(formData.email) &&
-      isValidIndianPhoneNumber(formData.phone)
+      isValidIndianPhoneNumber(formData.phone) &&
+      formData.beverageQuality?.length &&
+      formData.diningExperience?.length &&
+      formData.restaurantCleanliness?.length &&
+      formData.serviceQuality?.length
     ) {
       addFormData(formData);
-      // Reset form data to its initial state
       setFormData(initialFormData);
+    } else {
+      setIsErrorVisible(true);
+      hideToast();
     }
   };
 
@@ -90,21 +106,21 @@ export const Form = () => {
   };
 
   const isValidEmail = (email) => {
-    // Regular expression for a simple email validation
+    // Regex for an email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
   const isValidIndianPhoneNumber = (phoneNumber) => {
-    // Regular expression for a simple Indian phone number validation
+    // Regexp for an Indian phone number validation
     const phoneRegex = /^[6-9]\d{9}$/;
     return phoneRegex.test(phoneNumber);
   };
 
   return (
-    <div className="flex flex-col gap-3 border w-4/5 -mt-14 rounded-t-lg bg-white px-5 py-3 font-customFont min-h-96">
+    <div className="flex flex-col gap-3 border w-4/5 -mt-14 rounded-t-lg bg-white px-5 py-3 pb-10 font-customFont min-h-96">
       <Tabs />
-      <div className="flex flex-row gap-6 mt-5">
+      <div className="flex lg:flex-row sm:flex-col max-[640px]:flex-col gap-6 mt-5">
         <Input
           title={`Customer Name`}
           placeholder={`Enter Customer Name`}
@@ -114,7 +130,7 @@ export const Form = () => {
         />
         <Input
           title={`Email`}
-          placeholder={`Enter Email`}
+          placeholder={`Enter Email Address`}
           handleInputChange={(e) => handleInputChange(e)}
           name={`email`}
           value={formData?.email}
@@ -122,7 +138,7 @@ export const Form = () => {
         />
       </div>
 
-      <div className="flex flex-row gap-6 w-1/2 pr-3">
+      <div className="flex flex-row gap-6 lg:w-1/2 lg:pr-3 outline-none ">
         <Input
           title={`Phone`}
           placeholder={`Enter Phone Number`}
@@ -135,29 +151,33 @@ export const Form = () => {
       </div>
 
       <div className="flex flex-col gap-3 mt-2">
-        <div className="flex flex-row gap-8">
+        <div className="flex lg:flex-row sm:flex-col max-[640px]:flex-col gap-8">
           <RadioInput
             title={`Please rate the quality of the service you received from your host.`}
             handleInputChange={(e) => handleInputChange(e)}
             name={`serviceQuality`}
+            value={formData?.serviceQuality}
           />
           <RadioInput
             title={`Please rate the quality of your beverage.`}
             handleInputChange={(e) => handleInputChange(e)}
             name={`beverageQuality`}
+            value={formData?.beverageQuality}
           />
         </div>
 
-        <div className="flex flex-row gap-8">
+        <div className="flex lg:flex-row sm:flex-col max-[640px]:flex-col gap-8">
           <RadioInput
             title={`Was our restaurant clean?`}
             handleInputChange={(e) => handleInputChange(e)}
             name={`restaurantCleanliness`}
+            value={formData?.restaurantCleanliness}
           />
           <RadioInput
             title={`Please rate your overall dining experience.`}
             handleInputChange={(e) => handleInputChange(e)}
             name={`diningExperience`}
+            value={formData?.diningExperience}
           />
         </div>
       </div>
@@ -165,8 +185,7 @@ export const Form = () => {
       <div className="flex flex-row items-center justify-center mt-3">
         <button
           onClick={handleSubmit}
-          style={{ background: "rgb(8, 33, 66)" }}
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+          class="hover:bg-darkBlue text-white font-bold py-2 px-4 rounded-full bg-blue-700"
         >
           Submit Form
         </button>

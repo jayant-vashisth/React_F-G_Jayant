@@ -11,8 +11,11 @@ export const Input = ({
   showPhoneError,
 }) => {
   return (
-    <div className="flex flex-col gap-1 w-full min-w-80 relative font-customFont">
-      <span>{title}</span>
+    <div className="flex flex-col gap-1 w-full relative font-customFont">
+      <span className="flex flex-row">
+        {title}
+        <p className="text-customRed">*</p>
+      </span>
       <input
         style={{ border: "1px solid #CFD7DC" }}
         className="h-10 pl-3 pr-3"
@@ -25,82 +28,67 @@ export const Input = ({
         }}
       />
       {showEmailError && (
-        <span className="text-custom-sm text-red absolute -bottom-4 left-1">
-          Enter Correct Email
+        <span className="text-custom-sm text-red absolute -bottom-4 left-1 text-customRed">
+          Enter Correct Email Address
         </span>
       )}
       {showPhoneError && (
-        <span className="text-red text-custom-sm absolute -bottom-4 left-1">
-          Enter Phone Number
+        <span className="text-red text-custom-sm absolute -bottom-4 left-1  text-customRed">
+          Enter Correct Phone Number
         </span>
       )}
     </div>
   );
 };
 
-export const RadioInput = ({ title, handleInputChange, name }) => {
+export const RadioInput = ({ title, handleInputChange, name, value }) => {
   return (
     <div className="flex flex-col gap-1 w-full font-customFont">
-      <span>{title}</span>
+      <span className="flex flex-row">
+        {title} <p className="text-customRed">*</p>
+      </span>
       <div className="flex flex-row gap-3">
-        <div className="flex flex-row items-center gap-2 justify-center">
-          <span>Excellent</span>
-          <input
-            onChange={(e) => {
-              handleInputChange(e);
-            }}
-            className="cursor-pointer"
-            type="radio"
-            name={name}
-            value="Excellent"
-          />
-        </div>
-        <div className="flex flex-row items-center gap-2 justify-center">
-          <span>Good</span>
-          <input
-            onChange={(e) => {
-              handleInputChange(e);
-            }}
-            type="radio"
-            name={name}
-            value="Good"
-            className="cursor-pointer"
-          />
-        </div>
-        <div className="flex flex-row items-center gap-2 justify-center">
-          <span>Fair</span>
-          <input
-            onChange={(e) => {
-              handleInputChange(e);
-            }}
-            type="radio"
-            name={name}
-            value="Fair"
-            className="cursor-pointer"
-          />
-        </div>
-        <div className="flex flex-row items-center gap-2 justify-center">
-          <span>Bad</span>
-          <input
-            onChange={(e) => {
-              handleInputChange(e);
-            }}
-            type="radio"
-            name={name}
-            value="Bad"
-            className="cursor-pointer"
-          />
-        </div>
+        <RadioGroup
+          title={`Excellent`}
+          value={value}
+          name={name}
+          handleInputChange={handleInputChange}
+        />
+        <RadioGroup
+          title={`Good`}
+          value={value}
+          name={name}
+          handleInputChange={handleInputChange}
+        />
+        <RadioGroup
+          title={`Fair`}
+          value={value}
+          name={name}
+          handleInputChange={handleInputChange}
+        />
+        <RadioGroup
+          title={`Bad`}
+          value={value}
+          name={name}
+          handleInputChange={handleInputChange}
+        />
       </div>
     </div>
   );
 };
 
-// export const RadioGroup = ({title, group}) => {
-//   return (
-//     <div>
-//       <span>Bad</span>
-//       <input type="radio" name="fav_language" />
-//     </div>
-//   );
-// };
+export const RadioGroup = ({ title, value, name, handleInputChange }) => {
+  return (
+    <div className="flex flex-row items-center gap-2 justify-center">
+      <span>{title}</span>
+      <input
+        onChange={(e) => handleInputChange(e)}
+        checked={value == title}
+        type="radio"
+        name={name}
+        value={title}
+        className="cursor-pointer"
+      />
+    </div>
+  );
+};

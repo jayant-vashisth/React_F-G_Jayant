@@ -7,9 +7,9 @@ module.exports = {
       colors: {
         "gray-500": "#7F7F7F",
         "border-gray-200": "#E5E5E5",
-        red: "#FF0000",
+        customRed: "#FF0000",
         bgColor: "#ECEFF0",
-        ...colors,
+
         dark: {
           "border-gray-700": "#1A202C",
           "text-gray-400": "#A0AEC0",
@@ -24,19 +24,17 @@ module.exports = {
       "bg-gray-800": "#2d3748",
       "bg-gray-100": "#f7fafc",
       "bg-gray-800": "#2d3748",
+      bgColor: "#ECEFF0",
+      darkBlue: "#082142",
     },
     fontFamily: {
       customFont: ["inter"],
-      sideBarFont: ["Lato"],
     },
     fontSize: {
       "custom-sm": "12px",
       "custom-md": "14px",
       "custom-lg": "18px",
       "custom-xl": "22px",
-    },
-    maxWidth: {
-      790: "478px",
     },
   },
   darkMode: "class",
