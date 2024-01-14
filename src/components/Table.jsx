@@ -26,7 +26,7 @@ export const Table = () => {
   };
 
   return (
-    <div class="mt-4 overflow-x-auto flex md:h-96 max-[640px]:max-h-screen flex-col gap-3 data-table">
+    <div class="mt-4 flex-col gap-3 data-table">
       <div className="mt-2">
         <div>
           <label
@@ -61,58 +61,62 @@ export const Table = () => {
           </div>
         </div>
       </div>
-      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400  z-10">
-        <thead class="text-xs text-gray-700 uppercase bg-bg-gray-100 dark:bg-gray-700 dark:text-gray-400 sticky top-0 z-100">
-          <tr>
-            <th scope="col" class="px-3 py-2">
-              Name
-            </th>
-            <th scope="col" class="px-3 py-2">
-              Email
-            </th>
-            <th scope="col" class="px-3 py-2">
-              Phone No.
-            </th>
-            <th scope="col" class="px-3 py-2">
-              Quality of service
-            </th>
-            <th scope="col" class="px-3 py-2">
-              Quality of beverage
-            </th>
-            <th scope="col" class="px-3 py-2">
-              Cleanliness
-            </th>
-            <th scope="col" class="px-3 py-2">
-              Dining experience
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {(updatedSearchQuery === "" ? formDataArray : filteredData)?.map(
-            (data, index) => {
-              return (
-                <tr
-                  key={index}
-                  class={`${index % 2 === 0 ? "bg-white" : "bg-bg-gray-100"}`}
-                >
-                  <th
-                    scope="row"
-                    class="px-3 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+      <div
+        className="overflow-x-auto md:h-custom max-[640px]:max-h-screen mt-3"
+      >
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400  z-10">
+          <thead class="text-xs text-gray-700 uppercase bg-bg-gray-100 dark:bg-gray-700 dark:text-gray-400 sticky top-0 z-100">
+            <tr>
+              <th scope="col" class="px-3 py-2">
+                Name
+              </th>
+              <th scope="col" class="px-3 py-2">
+                Email
+              </th>
+              <th scope="col" class="px-3 py-2">
+                Phone No.
+              </th>
+              <th scope="col" class="px-3 py-2">
+                Quality of service
+              </th>
+              <th scope="col" class="px-3 py-2">
+                Quality of beverage
+              </th>
+              <th scope="col" class="px-3 py-2">
+                Cleanliness
+              </th>
+              <th scope="col" class="px-3 py-2">
+                Dining experience
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {(updatedSearchQuery === "" ? formDataArray : filteredData)?.map(
+              (data, index) => {
+                return (
+                  <tr
+                    key={index}
+                    class={`${index % 2 === 0 ? "bg-white" : "bg-bg-gray-100"}`}
                   >
-                    {data?.name}
-                  </th>
-                  <td class="px-3 py-2">{data?.email}</td>
-                  <td class="px-3 py-2">{data?.phone}</td>
-                  <td class="px-3 py-2">{data?.serviceQuality}</td>
-                  <td class="px-3 py-2">{data?.beverageQuality}</td>
-                  <td class="px-3 py-2">{data?.restaurantCleanliness}</td>
-                  <td class="px-3 py-2">{data?.diningExperience}</td>
-                </tr>
-              );
-            }
-          )}
-        </tbody>
-      </table>
+                    <th
+                      scope="row"
+                      class="px-3 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {data?.name}
+                    </th>
+                    <td class="px-3 py-2">{data?.email}</td>
+                    <td class="px-3 py-2">{data?.phone}</td>
+                    <td class="px-3 py-2">{data?.serviceQuality}</td>
+                    <td class="px-3 py-2">{data?.beverageQuality}</td>
+                    <td class="px-3 py-2">{data?.restaurantCleanliness}</td>
+                    <td class="px-3 py-2">{data?.diningExperience}</td>
+                  </tr>
+                );
+              }
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

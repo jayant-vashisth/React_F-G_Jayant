@@ -14,6 +14,9 @@ module.exports = {
           "text-gray-400": "#A0AEC0",
         },
       },
+      height: {
+        custom: "310px",
+      },
     },
     backgroundColor: {
       "blue-500": "#3490dc",
