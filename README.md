@@ -1,4 +1,6 @@
 # Live Website
+<img src="https://github.com/jayant-vashisth/React_F-G_Jayant/blob/main/src/assets/screenshot/ss2.png" width="600" />
+
 <img src="https://github.com/jayant-vashisth/React_F-G_Jayant/blob/main/src/assets/screenshot/ss.png" width="600" />
 
 Check it out live at https://react-f-g-jayant.vercel.app/
