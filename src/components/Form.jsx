@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Input, RadioInput } from "./Input";
 import { Tabs } from "./Tabs";
+import { initializeDB } from "../config/InitializeDB";
+import { SuccessToast, Toast } from "./Toast";
+import { ActiveContext } from "../state/NavigationContext";
 
 export const Form = () => {
   const initialFormData = {
@@ -13,17 +16,37 @@ export const Form = () => {
     diningExperience: "",
   };
 
+  const { setIsVisible, hideToast } = useContext(ActiveContext);
+
   const [formData, setFormData] = useState(initialFormData);
   const [showEmailError, setShowEmailError] = useState(false);
   const [showPhoneError, setShowPhoneError] = useState(false);
-  const [formDataArray, setFormDataArray] = useState(() => {
-    // Retrieve data from local storage on component mount
-    const storedData = localStorage.getItem("formDataArray");
-    return storedData ? JSON.parse(storedData) : [];
-  });
+
+  // Function to add form data to IndexedDB
+  function addFormData(formData) {
+    initializeDB()
+      .then((db) => {
+        const transaction = db.transaction(["diningExperience"], "readwrite");
+        const objectStore = transaction.objectStore("diningExperience");
+        const request = objectStore.add(formData);
+
+        request.onsuccess = () => {
+          setIsVisible(true);
+          hideToast();
+          console.log("dasdasdasds");
+        };
+
+        transaction.oncomplete = () => {
+          db.close();
+        };
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
   // Function to handle form submission
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Add current form data to the array
     if (formData.email?.length != 0 && !isValidEmail(formData.email)) {
       setShowEmailError(true);
@@ -40,15 +63,7 @@ export const Form = () => {
       isValidEmail(formData.email) &&
       isValidIndianPhoneNumber(formData.phone)
     ) {
-      const updatedFormDataArray = [...formDataArray, formData];
-
-      // Update state and local storage
-      setFormDataArray(updatedFormDataArray);
-      localStorage.setItem(
-        "formDataArray",
-        JSON.stringify(updatedFormDataArray)
-      );
-
+      addFormData(formData);
       // Reset form data to its initial state
       setFormData(initialFormData);
     }
@@ -88,9 +103,7 @@ export const Form = () => {
 
   return (
     <div className="flex flex-col gap-3 border w-4/5 -mt-14 rounded-t-lg bg-white px-5 py-3 font-customFont min-h-96">
-      <div>
-        <Tabs />
-      </div>
+      <Tabs />
       <div className="flex flex-row gap-6 mt-5">
         <Input
           title={`Customer Name`}

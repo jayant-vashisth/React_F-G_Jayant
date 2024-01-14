@@ -5,7 +5,7 @@ export const Tabs = () => {
   const { setActive, active } = useContext(ActiveContext);
   return (
     <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
-      <ul class="flex flex-wrap -mb-px">
+      <ul class="flex flex-wrap -mb-px relative">
         <li class="me-2">
           <span
             className={`inline-block px-4 py-2 border-b-2 rounded-t-lg ${
@@ -20,6 +20,7 @@ export const Tabs = () => {
             Form
           </span>
         </li>
+
         <li class="me-2">
           <span
             className={`inline-block px-4 py-2 border-b-2 rounded-t-lg ${
@@ -31,7 +32,7 @@ export const Tabs = () => {
               setActive(false);
             }}
           >
-            Dashboard
+            Table
           </span>
         </li>
       </ul>
